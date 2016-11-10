@@ -4,12 +4,12 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -28,27 +28,30 @@ public class ApplicationContext {
 	@Bean(name="dataSource")
 	public DataSource getOracleDataSource()
 	{
-		DriverManagerDataSource datasource=new DriverManagerDataSource();
+		BasicDataSource datasource=new BasicDataSource();
 		datasource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
 		datasource.setUrl("jdbc:oracle:thin:@localhost:1521:XE");
-		datasource.setUsername("NISHITDB");
-		datasource.setPassword("19051994");
-		
-		Properties p=new Properties();
-		p.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
-		p.setProperty("hibernate.hbm2ddl.auto", "update");
-		p.setProperty("hibernate.show_sql","true");
-		p.setProperty("hibernate.format_sql", "true");
-		datasource.setConnectionProperties(p);
+		datasource.setUsername("BLOGHUB");
+		datasource.setPassword("123456");
 		
 		return datasource;	
 	}
 	
+	private Properties getHibernateProperties() {
+		Properties properties = new Properties();
+		properties.setProperty("hibernate.hbm2ddl.auto", "update");
+		properties.setProperty("hibernate.show_sql", "true");
+		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
+		properties.setProperty("hibernate.format_sql", "true");
+		return properties;
+	}
+	
 	@Autowired
 	@Bean(name="sessionFactory")
-	public SessionFactory getSessionFactory(DataSource ds)
+	public SessionFactory getSessionFactory(DataSource dataSource)
 	{
-		LocalSessionFactoryBuilder sessionBuilder=new LocalSessionFactoryBuilder(ds);
+		LocalSessionFactoryBuilder sessionBuilder=new LocalSessionFactoryBuilder(dataSource);
+		sessionBuilder.addProperties(getHibernateProperties());
 		sessionBuilder.addAnnotatedClass(Blog.class);
 		return sessionBuilder.buildSessionFactory();
 	}
@@ -56,15 +59,15 @@ public class ApplicationContext {
 	@Autowired
 	@Bean(name = "transactionManager")
 	public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
-		HibernateTransactionManager tm=new HibernateTransactionManager(sessionFactory);
-		return tm;
+		HibernateTransactionManager transactionManager=new HibernateTransactionManager(sessionFactory);
+		return transactionManager;
 	}
 	
 	@Autowired
 	@Bean(name="blogDAO")
-	public BlogDAO getBlogDao(SessionFactory sf)
+	public BlogDAO getBlogDao(SessionFactory sessionFactory)
 	{
-		return new BlogDAOImpl(sf);
+		return new BlogDAOImpl(sessionFactory);
 	}
 }
 

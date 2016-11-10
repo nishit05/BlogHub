@@ -4,20 +4,17 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.springframework.stereotype.Component;
 
 @Component
 @Entity
-public class Blog implements Serializable {
+public class Blog extends ErrorCode implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private String b_id;
 	
 	private String title;
@@ -28,7 +25,9 @@ public class Blog implements Serializable {
 	
 	private Date b_date;
 	
-	private String status;
+	private String status="pending";
+	
+	
 
 	public String getB_id() {
 		return b_id;
