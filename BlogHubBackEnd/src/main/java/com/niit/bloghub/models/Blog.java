@@ -27,7 +27,7 @@ public class Blog extends ErrorCode implements Serializable {
 	
 	private String status="pending";
 	
-	
+	private String reason;
 
 	public String getB_id() {
 		return b_id;
@@ -75,6 +75,14 @@ public class Blog extends ErrorCode implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 
 }

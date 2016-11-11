@@ -26,7 +26,7 @@ public class BlogController {
 	@Autowired
 	private Blog blog;
 
-	public Date giveDate(Date d) {
+	private Date giveDate(Date d) {
 		DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
 		String ds = df.format(d);
 		try {
@@ -39,8 +39,22 @@ public class BlogController {
 		}
 	}
 
+	private ResponseEntity<Blog> setStatus(Blog b, String st, String m) {
+		if (b == null) {
+			b = new Blog();
+			b.setCode(404);
+			b.setErrormsg("Blog not found");
+		} else {
+			b.setStatus(st);
+			b.setReason(m);
+		}
+		blogDAO.update(b);
+		return new ResponseEntity<Blog>(b, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "addblog", method = RequestMethod.POST)
 	public ResponseEntity<Blog> createBlog(@RequestBody Blog blog) {
+
 		blog.setB_date(giveDate(new Date()));
 		if (blogDAO.addBlog(blog)) {
 			blog.setCode(200);
@@ -76,23 +90,29 @@ public class BlogController {
 		}
 		return new ResponseEntity<List<Blog>>(bl, HttpStatus.OK);
 	}
+
+	@RequestMapping(value = "blogaccept/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Blog> accept(@PathVariable(value = "id") String id) {
+		blog = blogDAO.getBlog(id);
+		return setStatus(blog, "Approved".toUpperCase(), "No Reason");
+	}
+
+	@RequestMapping(value = "blogreject/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Blog> reject(@PathVariable(value = "id") String id) {
+		blog = blogDAO.getBlog(id);
+		return setStatus(blog, "Reject".toUpperCase(), "Inappropriate Content");
+	}
 	
-	@RequestMapping(value="blogaccept/{id}",method=RequestMethod.GET)
-	public ResponseEntity<Blog> accept(@PathVariable(value="id")String id)
+	@RequestMapping(value="deleteblog/{id}",method=RequestMethod.GET)
+	public ResponseEntity<List<Blog>>delete(@PathVariable(value="id")String id)
 	{
-		blog=blogDAO.getBlog(id);
-		if(blog==null)
+		
+		if(blogDAO.deleteBlog(id))
 		{
-			blog=new Blog();
-			blog.setCode(404);
-			blog.setErrormsg("Blog not found for "+id);
-			return new ResponseEntity<Blog>(blog,HttpStatus.OK);
+			ResponseEntity<List<Blog>>re=getAllBlogs();
+			return re;
 		}
 		else
-		{
-			blog.setStatus("approved");
-			blogDAO.update(blog);
-			return new ResponseEntity<Blog>(blog,HttpStatus.OK);
-		}
+			return getAllBlogs();
 	}
 }

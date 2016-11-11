@@ -12,4 +12,5 @@ public interface BlogDAO {
 	List<Blog> getAllBlog();
 	boolean update(Blog b);
 	Blog getBlog(String id);
+	boolean deleteBlog(String id);
 }

@@ -28,12 +28,26 @@ public class BlogDAOImpl implements BlogDAO {
 		this.sessionFactory= sessionFactory;
 	}
 
+	private boolean isNotValidId(String id)
+	{
+		int ct=0;
+		List<Blog>li=getAllBlog();
+		for(Blog h:li)
+		{
+			if(h.getB_id().equalsIgnoreCase(id))
+				ct++;
+		}
+		if(ct!=0)
+			return false;
+		else
+			return true;
+	}
+	
 	@Override
 	public boolean addBlog(Blog b) {
 		// TODO Auto-generated method stub
 		lg.debug("Calling add Blog method");
 		try {
-			System.out.println(b.getTitle());
 			sessionFactory.getCurrentSession().save(b);
 			return true;
 		} catch (HibernateException e) {
@@ -48,7 +62,6 @@ public class BlogDAOImpl implements BlogDAO {
 	@Override
 	public List<Blog> getAllBlog() {
 		// TODO Auto-generated method stub
-		lg.debug("Get All Blog method calling");
 		String hql="From Blog";
 		Query q=sessionFactory.getCurrentSession().createQuery(hql);
 		lg.debug("Query is "+hql);
@@ -87,6 +100,28 @@ public class BlogDAOImpl implements BlogDAO {
 			return null;
 		}
 		
+	}
+
+	@Override
+	public boolean deleteBlog(String id) {
+		// TODO Auto-generated method stub
+		if(isNotValidId(id))
+		{
+			return false;
+		}
+		else
+		{
+			try {
+				Blog b=(Blog) sessionFactory.getCurrentSession().get(Blog.class, id);
+				sessionFactory.getCurrentSession().delete(b);
+				return true;
+			} catch (HibernateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+		
+		}
 	}
 
 	
