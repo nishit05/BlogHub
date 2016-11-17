@@ -68,7 +68,7 @@ public class BlogController {
 	}
 
 	@RequestMapping(value = "getblog/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Blog> getBlog(@PathVariable(value = "id") String id) {
+	public ResponseEntity<Blog> getBlog(@PathVariable(value = "id") int id) {
 		blog = blogDAO.getBlog(id);
 		if (blog == null) {
 			blog = new Blog();
@@ -92,19 +92,19 @@ public class BlogController {
 	}
 
 	@RequestMapping(value = "blogaccept/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Blog> accept(@PathVariable(value = "id") String id) {
+	public ResponseEntity<Blog> accept(@PathVariable(value = "id") int id) {
 		blog = blogDAO.getBlog(id);
 		return setStatus(blog, "Approved".toUpperCase(), "No Reason");
 	}
 
 	@RequestMapping(value = "blogreject/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Blog> reject(@PathVariable(value = "id") String id) {
+	public ResponseEntity<Blog> reject(@PathVariable(value = "id") int id) {
 		blog = blogDAO.getBlog(id);
 		return setStatus(blog, "Reject".toUpperCase(), "Inappropriate Content");
 	}
 	
 	@RequestMapping(value="deleteblog/{id}",method=RequestMethod.GET)
-	public ResponseEntity<List<Blog>>delete(@PathVariable(value="id")String id)
+	public ResponseEntity<List<Blog>>delete(@PathVariable(value="id")int id)
 	{
 		
 		if(blogDAO.deleteBlog(id))

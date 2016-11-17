@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 import org.springframework.stereotype.Component;
 
@@ -13,27 +16,29 @@ import org.springframework.stereotype.Component;
 public class Blog extends ErrorCode implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
+	@SequenceGenerator(name = "blog_id", initialValue = 1000)
 	@Id
-	private String b_id;
-	
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "blog_id")
+	private int b_id;
+
 	private String title;
-	
+
 	private String u_id;
-	
+
 	private String content;
-	
+
 	private Date b_date;
-	
-	private String status="pending";
-	
+
+	private String status = "pending";
+
 	private String reason;
 
-	public String getB_id() {
+	public int getB_id() {
 		return b_id;
 	}
 
-	public void setB_id(String b_id) {
+	public void setB_id(int b_id) {
 		this.b_id = b_id;
 	}
 

@@ -11,6 +11,6 @@ public interface BlogDAO {
 	boolean addBlog(Blog b);
 	List<Blog> getAllBlog();
 	boolean update(Blog b);
-	Blog getBlog(String id);
-	boolean deleteBlog(String id);
+	Blog getBlog(int id);
+	boolean deleteBlog(int id);
 }

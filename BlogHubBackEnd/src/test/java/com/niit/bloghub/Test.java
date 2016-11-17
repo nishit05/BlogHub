@@ -16,7 +16,7 @@ public class Test {
 		app.refresh();
 		BlogDAO blogdao=(BlogDAO) app.getBean("blogDAO");
 		Blog b =new Blog();
-		b.setB_id("b678");
+		b.setB_id(678);
 		b.setTitle("Sports");
 		b.setContent("This is a Sports Blog");
 		b.setU_id("u78");

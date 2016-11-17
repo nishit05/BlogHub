@@ -14,35 +14,33 @@ import org.springframework.transaction.annotation.Transactional;
 import com.niit.bloghub.dao.BlogDAO;
 import com.niit.bloghub.models.Blog;
 
-@Repository(value="blogDAO")
+@Repository(value = "blogDAO")
 @Transactional
 public class BlogDAOImpl implements BlogDAO {
 
-	private static final Logger lg=LoggerFactory.getLogger(BlogDAOImpl.class);
-	
+	private static final Logger lg = LoggerFactory.getLogger(BlogDAOImpl.class);
+
 	@Autowired
 	private SessionFactory sessionFactory;
-	
+
 	public BlogDAOImpl(SessionFactory sessionFactory) {
 		super();
-		this.sessionFactory= sessionFactory;
+		this.sessionFactory = sessionFactory;
 	}
 
-	private boolean isNotValidId(String id)
-	{
-		int ct=0;
-		List<Blog>li=getAllBlog();
-		for(Blog h:li)
-		{
-			if(h.getB_id().equalsIgnoreCase(id))
+	private boolean isNotValidId(int id) {
+		int ct = 0;
+		List<Blog> li = getAllBlog();
+		for (Blog h : li) {
+			if (h.getB_id()==id)
 				ct++;
 		}
-		if(ct!=0)
+		if (ct != 0)
 			return false;
 		else
 			return true;
 	}
-	
+
 	@Override
 	public boolean addBlog(Blog b) {
 		// TODO Auto-generated method stub
@@ -56,15 +54,14 @@ public class BlogDAOImpl implements BlogDAO {
 			sessionFactory.close();
 			return false;
 		}
-		
 	}
 
 	@Override
 	public List<Blog> getAllBlog() {
 		// TODO Auto-generated method stub
-		String hql="From Blog";
-		Query q=sessionFactory.getCurrentSession().createQuery(hql);
-		lg.debug("Query is "+hql);
+		String hql = "From Blog";
+		Query q = sessionFactory.getCurrentSession().createQuery(hql);
+		lg.debug("Query is " + hql);
 		return q.list();
 	}
 
@@ -72,47 +69,52 @@ public class BlogDAOImpl implements BlogDAO {
 	public boolean update(Blog b) {
 		// TODO Auto-generated method stub
 		lg.debug("Update method calling");
-		try {
-			sessionFactory.getCurrentSession().update(b);
-			lg.debug("Blog updated");
-			return true;
-		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			lg.debug("Update unsuccessful");
+		if (isNotValidId(b.getB_id())) {
 			return false;
+		} else {
+			try {
+				sessionFactory.getCurrentSession().update(b);
+				lg.debug("Blog updated");
+				return true;
+			} catch (HibernateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				lg.debug("Update unsuccessful");
+				return false;
+			}
 		}
-		
+
 	}
 
 	@Override
-	public Blog getBlog(String id) {
+	public Blog getBlog(int id) {
 		// TODO Auto-generated method stub
 		lg.debug("get blog call");
-		try {
-			Blog b=(Blog) sessionFactory.getCurrentSession().get(Blog.class, id);
-			lg.debug("Blog is recieved");
-			return b;
-		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			lg.debug("Could not get Blog");
+		if (isNotValidId(id)) {
 			return null;
+		} else {
+			try {
+				Blog b = (Blog) sessionFactory.getCurrentSession().get(Blog.class, new Integer(id));
+				lg.debug("Blog is recieved");
+				return b;
+			} catch (HibernateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				lg.debug("Could not get Blog");
+				return null;
+			}
 		}
-		
+
 	}
 
 	@Override
-	public boolean deleteBlog(String id) {
+	public boolean deleteBlog(int id) {
 		// TODO Auto-generated method stub
-		if(isNotValidId(id))
-		{
+		if (isNotValidId(id)) {
 			return false;
-		}
-		else
-		{
+		} else {
 			try {
-				Blog b=(Blog) sessionFactory.getCurrentSession().get(Blog.class, id);
+				Blog b = (Blog) sessionFactory.getCurrentSession().get(Blog.class, new Integer(id));
 				sessionFactory.getCurrentSession().delete(b);
 				return true;
 			} catch (HibernateException e) {
@@ -120,12 +122,8 @@ public class BlogDAOImpl implements BlogDAO {
 				e.printStackTrace();
 				return false;
 			}
-		
+
 		}
 	}
-
-	
-
-	
 
 }
