@@ -1,9 +1,12 @@
-D:\Collaboration\BlogHubBackEnd\src\main\java\com\niit\bloghub\models\Comment.java
 D:\Collaboration\BlogHubBackEnd\src\main\java\com\niit\bloghub\controller\BlogController.java
+D:\Collaboration\BlogHubBackEnd\src\main\java\com\niit\bloghub\models\Users.java
 D:\Collaboration\BlogHubBackEnd\src\main\java\com\niit\bloghub\dao\BlogDAO.java
 D:\Collaboration\BlogHubBackEnd\src\main\java\com\niit\bloghub\config\ApplicationContext.java
+D:\Collaboration\BlogHubBackEnd\src\main\java\com\niit\bloghub\dao\UsersDAO.java
 D:\Collaboration\BlogHubBackEnd\src\main\java\com\niit\bloghub\daoimpl\BlogDAOImpl.java
+D:\Collaboration\BlogHubBackEnd\src\main\java\com\niit\bloghub\daoimpl\UsersDAOImpl.java
+D:\Collaboration\BlogHubBackEnd\src\main\java\com\niit\bloghub\generator\IdGenerator.java
 D:\Collaboration\BlogHubBackEnd\src\main\java\com\niit\bloghub\models\ErrorCode.java
 D:\Collaboration\BlogHubBackEnd\src\main\java\com\niit\bloghub\config\AppInit.java
 D:\Collaboration\BlogHubBackEnd\src\main\java\com\niit\bloghub\models\Blog.java
-D:\Collaboration\BlogHubBackEnd\src\main\java\com\niit\bloghub\tester\BlogTester.java
+D:\Collaboration\BlogHubBackEnd\src\main\java\com\niit\bloghub\controller\UserController.java

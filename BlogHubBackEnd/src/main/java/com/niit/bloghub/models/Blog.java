@@ -75,11 +75,11 @@ public class Blog extends ErrorCode implements Serializable {
 	}
 
 	public String getStatus() {
-		return status;
+		return status.toUpperCase();
 	}
 
 	public void setStatus(String status) {
-		this.status = status;
+		this.status = status.toUpperCase();
 	}
 
 	public String getReason() {

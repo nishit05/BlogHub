@@ -28,19 +28,6 @@ public class BlogDAOImpl implements BlogDAO {
 		this.sessionFactory = sessionFactory;
 	}
 
-	private boolean isNotValidId(int id) {
-		int ct = 0;
-		List<Blog> li = getAllBlog();
-		for (Blog h : li) {
-			if (h.getB_id()==id)
-				ct++;
-		}
-		if (ct != 0)
-			return false;
-		else
-			return true;
-	}
-
 	@Override
 	public boolean addBlog(Blog b) {
 		// TODO Auto-generated method stub
@@ -69,61 +56,47 @@ public class BlogDAOImpl implements BlogDAO {
 	public boolean update(Blog b) {
 		// TODO Auto-generated method stub
 		lg.debug("Update method calling");
-		if (isNotValidId(b.getB_id())) {
+		try {
+			sessionFactory.getCurrentSession().update(b);
+			lg.debug("Blog updated");
+			return true;
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			lg.debug("Update unsuccessful");
 			return false;
-		} else {
-			try {
-				sessionFactory.getCurrentSession().update(b);
-				lg.debug("Blog updated");
-				return true;
-			} catch (HibernateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				lg.debug("Update unsuccessful");
-				return false;
-			}
 		}
-
 	}
 
 	@Override
 	public Blog getBlog(int id) {
 		// TODO Auto-generated method stub
 		lg.debug("get blog call");
-		if (isNotValidId(id)) {
+		try {
+			Blog b = (Blog) sessionFactory.getCurrentSession().get(Blog.class, new Integer(id));
+			lg.debug("Blog is recieved");
+			return b;
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			lg.debug("Could not get Blog");
 			return null;
-		} else {
-			try {
-				Blog b = (Blog) sessionFactory.getCurrentSession().get(Blog.class, new Integer(id));
-				lg.debug("Blog is recieved");
-				return b;
-			} catch (HibernateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				lg.debug("Could not get Blog");
-				return null;
-			}
 		}
-
 	}
 
 	@Override
 	public boolean deleteBlog(int id) {
 		// TODO Auto-generated method stub
-		if (isNotValidId(id)) {
+		try {
+			Blog b = (Blog) sessionFactory.getCurrentSession().get(Blog.class, new Integer(id));
+			sessionFactory.getCurrentSession().delete(b);
+			return true;
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			return false;
-		} else {
-			try {
-				Blog b = (Blog) sessionFactory.getCurrentSession().get(Blog.class, new Integer(id));
-				sessionFactory.getCurrentSession().delete(b);
-				return true;
-			} catch (HibernateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return false;
-			}
-
 		}
+
 	}
 
 }

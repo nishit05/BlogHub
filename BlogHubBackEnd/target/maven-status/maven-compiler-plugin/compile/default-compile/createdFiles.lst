@@ -1,9 +1,12 @@
 com\niit\bloghub\controller\BlogController.class
-com\niit\bloghub\tester\BlogTester.class
-com\niit\bloghub\models\Blog.class
-com\niit\bloghub\models\Comment.class
 com\niit\bloghub\config\AppInit.class
+com\niit\bloghub\controller\UserController.class
+com\niit\bloghub\dao\UsersDAO.class
+com\niit\bloghub\daoimpl\BlogDAOImpl.class
+com\niit\bloghub\daoimpl\UsersDAOImpl.class
+com\niit\bloghub\models\Blog.class
 com\niit\bloghub\config\ApplicationContext.class
 com\niit\bloghub\dao\BlogDAO.class
-com\niit\bloghub\daoimpl\BlogDAOImpl.class
+com\niit\bloghub\models\Users.class
+com\niit\bloghub\generator\IdGenerator.class
 com\niit\bloghub\models\ErrorCode.class

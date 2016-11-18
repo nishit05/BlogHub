@@ -33,10 +33,7 @@ public class UserController {
 	{
 		if(u==null)
 		{
-			u=new Users();
-			u.setCode(404);
-			u.setErrormsg("Blog not found");
-			u.setType("No User");
+			return isNull(u);
 		}
 		else
 		{
@@ -45,6 +42,15 @@ public class UserController {
 			usersDAO.update(u);
 		}
 		return new ResponseEntity<Users>(u,HttpStatus.OK);
+	}
+	
+	private ResponseEntity<Users> isNull(Users u)
+	{
+			u=new Users();
+			u.setCode(404);
+			u.setErrormsg("User not found");
+			u.setType("No User");
+		return new ResponseEntity<Users>(u,HttpStatus.OK);	
 	}
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	public ResponseEntity<Users> addUser(@RequestBody Users users) {
@@ -98,11 +104,7 @@ public class UserController {
 		}
 		else
 		{
-			users=new Users();
-			users.setCode(500);
-			users.setErrormsg("User not found for "+id);
-			users.setType("No User");
-			return new ResponseEntity<Users>(users,HttpStatus.OK);
+			return isNull(users);
 		}
 	}
 	
@@ -124,6 +126,8 @@ public class UserController {
 	public ResponseEntity<Users>logout(@PathVariable("id")int id)
 	{
 		users=usersDAO.getUserById(id);
+		if(users!=null)
+		{
 		if(users.getOnline().equalsIgnoreCase("yes"))
 		{
 			users.setOnline("No");
@@ -133,17 +137,24 @@ public class UserController {
 			session.invalidate();
 		}
 		return new ResponseEntity<Users>(users,HttpStatus.OK);
+		}
+		else
+		{
+			return isNull(users);
+		}
+		
 	}
 	
 	@RequestMapping(value="userdelete/{id}",method=RequestMethod.GET)
-	public ResponseEntity<Users>userRemove(@PathVariable("id") int id)
+	public ResponseEntity<List<Users>>userRemove(@PathVariable("id") int id)
 	{
 		users=usersDAO.getUserById(id);
-		if(users.getStatus().equalsIgnoreCase("rejected"))
+		if(usersDAO.deleteUser(users))
 		{
-			return UserState(users, "Invalid", users.getReason());
+			ResponseEntity<List<Users>>re=getAllUsers();
+			return re;
 		}
 		else
-		return new ResponseEntity<Users>(users,HttpStatus.OK);
+		return getAllUsers();
 	}
 }

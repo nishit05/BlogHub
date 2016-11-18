@@ -39,17 +39,23 @@ public class BlogController {
 		}
 	}
 
+	private ResponseEntity<Blog> isNull(Blog b) {
+		b=new Blog();
+		b.setCode(404);
+		b.setErrormsg("Blog not found");
+		return new ResponseEntity<Blog>(b, HttpStatus.OK);
+	}
+
 	private ResponseEntity<Blog> setStatus(Blog b, String st, String m) {
-		if (b == null) {
-			b = new Blog();
-			b.setCode(404);
-			b.setErrormsg("Blog not found");
-		} else {
+		if (b != null) {
 			b.setStatus(st);
 			b.setReason(m);
+			blogDAO.update(b);
+			return new ResponseEntity<Blog>(b, HttpStatus.OK);
+		} else {
+			return isNull(b);
 		}
-		blogDAO.update(b);
-		return new ResponseEntity<Blog>(b, HttpStatus.OK);
+
 	}
 
 	@RequestMapping(value = "addblog", method = RequestMethod.POST)
@@ -71,11 +77,9 @@ public class BlogController {
 	public ResponseEntity<Blog> getBlog(@PathVariable(value = "id") int id) {
 		blog = blogDAO.getBlog(id);
 		if (blog == null) {
-			blog = new Blog();
-			blog.setCode(404);
-			blog.setErrormsg("Blog not found for " + id);
-		}
-		return new ResponseEntity<Blog>(blog, HttpStatus.OK);
+			return isNull(blog);
+		} else
+			return new ResponseEntity<Blog>(blog, HttpStatus.OK);
 
 	}
 
@@ -102,17 +106,14 @@ public class BlogController {
 		blog = blogDAO.getBlog(id);
 		return setStatus(blog, "Reject".toUpperCase(), "Inappropriate Content");
 	}
-	
-	@RequestMapping(value="deleteblog/{id}",method=RequestMethod.GET)
-	public ResponseEntity<List<Blog>>delete(@PathVariable(value="id")int id)
-	{
-		
-		if(blogDAO.deleteBlog(id))
-		{
-			ResponseEntity<List<Blog>>re=getAllBlogs();
+
+	@RequestMapping(value = "deleteblog/{id}", method = RequestMethod.GET)
+	public ResponseEntity<List<Blog>> delete(@PathVariable(value = "id") int id) {
+
+		if (blogDAO.deleteBlog(id)) {
+			ResponseEntity<List<Blog>> re = getAllBlogs();
 			return re;
-		}
-		else
+		} else
 			return getAllBlogs();
 	}
 }

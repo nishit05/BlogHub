@@ -25,12 +25,25 @@ public class UsersDAOImpl implements UsersDAO {
 		this.sessionFactory = sessionFactory;
 	}
 
+	private boolean isNotValidId(int id)
+	{
+		int ct=0;
+		for (Users u:getallUsers())
+		{
+			if(u.getU_id()==id)
+				ct++;
+		}
+		if(ct==0)
+			return true;
+		else
+			return false;
+	}
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Users> getallUsers() {
 		// TODO Auto-generated method stub
-		String hql="From Friends";
-		Query q=sessionFactory.getCurrentSession().createQuery(hql);
+		String hql = "From Friends";
+		Query q = sessionFactory.getCurrentSession().createQuery(hql);
 		return q.list();
 	}
 
@@ -45,16 +58,16 @@ public class UsersDAOImpl implements UsersDAO {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 	}
 
 	@Override
 	public Users getUser(String username, String password) {
 		// TODO Auto-generated method stub
-		
+
 		try {
-			String h="From Friends where username="+"'"+username+"'"+"and password="+"'"+password+"'";
-			Query q=sessionFactory.getCurrentSession().createQuery(h);
+			String h = "From Friends where username=" + "'" + username + "'" + "and password=" + "'" + password + "'";
+			Query q = sessionFactory.getCurrentSession().createQuery(h);
 			Users u = (Users) q.uniqueResult();
 			return u;
 		} catch (HibernateException e) {
@@ -62,19 +75,26 @@ public class UsersDAOImpl implements UsersDAO {
 			e.printStackTrace();
 			return null;
 		}
-		
+
 	}
 
 	@Override
 	public Users getUserById(int id) {
 		// TODO Auto-generated method stub
+		if(isNotValidId(id))
+		{
+			return null;
+		}
+		else
+		{
 		try {
-			Users u=(Users) sessionFactory.getCurrentSession().get(Users.class, new Integer(id));
+			Users u = (Users) sessionFactory.getCurrentSession().get(Users.class, new Integer(id));
 			return u;
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
+		}
 		}
 	}
 
@@ -89,22 +109,36 @@ public class UsersDAOImpl implements UsersDAO {
 			e.printStackTrace();
 			return false;
 		}
+
+	}
+
+	@Override
+	public boolean deleteUser(Users u) {
+		// TODO Auto-generated method stub
+		try {
+			sessionFactory.getCurrentSession().delete(u);
+			return true;
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 		
 	}
 
-//	public boolean validate(String username, String password) {
-//		// TODO Auto-generated method stub
-//		int ct=0;
-//		List<Users>ul=getallUsers();
-//		for(Users p:ul)
-//		{
-//			if(p.getUsername().equals(username) || p.getPassword().equals(password))
-//				ct++;
-//		}
-//		if(ct==0)
-//			return false;
-//		else
-//			return true;
-//	}
+	// public boolean validate(String username, String password) {
+	// // TODO Auto-generated method stub
+	// int ct=0;
+	// List<Users>ul=getallUsers();
+	// for(Users p:ul)
+	// {
+	// if(p.getUsername().equals(username) || p.getPassword().equals(password))
+	// ct++;
+	// }
+	// if(ct==0)
+	// return false;
+	// else
+	// return true;
+	// }
 
 }

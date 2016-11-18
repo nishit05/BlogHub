@@ -7,8 +7,14 @@ import com.niit.bloghub.models.Users;
 public interface UsersDAO {
 
 	boolean addUsers(Users u);
+
 	List<Users> getallUsers();
-	Users getUser(String username,String password);
+
+	Users getUser(String username, String password);
+
 	Users getUserById(int id);
+
 	boolean update(Users u);
+	
+	boolean deleteUser(Users u);
 }
