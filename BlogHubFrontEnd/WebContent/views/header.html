@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>BlogHub</title>
+</head>
+<link rel="stylesheet" href="../resources/css/bootstrap.min.css">
+<script src="../resources/js/jquery-3.1.1.min.js"></script>
+<script src="../resources/js/bootstrap.min.js"></script>
+<script src="../resources/js/angular.min.js"></script>
+<link rel="stylesheet" href="../resources/css/w3.css">
+<link rel="stylesheet" href="../resources/css/w3-theme-blue-grey.css">
+<link rel='stylesheet'
+	href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel="stylesheet" href="../resources/css/font-awesome.min.css">
+<style>
+html, body, h1, h2, h3, h4, h5 {
+	font-family: "Open Sans", sans-serif
+}
+span {
+	color: white;
+}
+</style>
+<script type="text/javascript">
+	function openNav() {
+		var x = document.getElementById("navDemo");
+		if (x.className.indexOf("w3-show") == -1) {
+			x.className += " w3-show";
+		} else {
+			x.className = x.className.replace(" w3-show", "");
+		}
+	}
+</script>
+<body class="w3-theme-l5">
+	<nav class="navbar navbar-default navbar-fixed-top"
+		style="background-color: DodgerBlue;">
+		<div class="navbar-header">
+			<a class="navbar-brand"><span class="glyphicon glyphicon-bold"></span></a>
+		</div>
+		<ul class="nav navbar-nav navbar-left">
+			<li class="w3-hide-medium w3-hide-large w3-opennav w3-right"><a
+				class="w3-hover-white w3-large w3-theme-d2"
+				href="javascript:void(0);" onclick="openNav()"><i
+					class="fa fa-bars"></i></a></li>
+			<li class="w3-hide-small"><a href="#" class="w3-hover-white"
+				title="News"><span class="glyphicon glyphicon-globe"></span></a></li>
+			<li class="w3-hide-small"><a href="#" class="w3-hover-white"
+				title="Account Settings"><span class="glyphicon glyphicon-cog"></span></a></li>
+			<li class="w3-hide-small"><a href="#" class="w3-hover-white"
+				title="Messages"><span class="glyphicon glyphicon-envelope"></span></a></li>
+			<li class="w3-hide-small w3-dropdown-hover"><a href="#"
+				class="w3-hover-white" title="Notifications"><span
+					class="glyphicon glyphicon-bell"></span><span
+					class="w3-badge w3-right w3-small w3-green">3</span></a>
+				<div class="w3-dropdown-content w3-white w3-card-4">
+					<a href="#">One new friend request</a> <a href="#">John Doe
+						posted on your wall</a> <a href="#">Jane likes your post</a>
+				</div></li>
+			<li class="w3-hide-small w3-right"><a href="#"
+				class="w3-padding-large w3-hover-white" title="My Account"><img
+					src="../resources/images/fbimg.jpg" class="w3-circle"
+					style="height: 25px; width: 25px" alt="Avatar"></a></li>
+		</ul>
+	</nav>
+</body>
+</html>

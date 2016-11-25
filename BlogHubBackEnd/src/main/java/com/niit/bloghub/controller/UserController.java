@@ -52,6 +52,8 @@ public class UserController {
 			u.setType("No User");
 		return new ResponseEntity<Users>(u,HttpStatus.OK);	
 	}
+	
+	
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	public ResponseEntity<Users> addUser(@RequestBody Users users) {
 		if (usersDAO.addUsers(users)) {
